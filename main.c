@@ -1,5 +1,6 @@
 #include "myBank.c"
 #include <stdio.h>
+
 int currentNumOfBankAccounts=0; //NOTE:i wanted to use extern but i had a warning "extern initilaizer"
 #define NumOfAccounts 50
 
@@ -8,106 +9,125 @@ int main(){
     double amount=0;
     int id=0;
     float rate=0;
-    while(input!='E'){//if the user input isnt E then the program should keep running
-printf("Transaction type:\n");
-scanf(" %c",&input);
-if(input=='O'){//if the user want to open a bank account
-    if(currentNumOfBankAccounts<NumOfAccounts){//and the accounts limit has not rached to 50
-        printf("Initial deposit:\n");
-        scanf("%lf",&amount);
-      if(amount>=0){//the amount should be un-negative number
+
+    printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+    while(input!='E'){
+    if(scanf(" %c", &input)==1){
+    switch(input){
+        case 'O':
+         if(currentNumOfBankAccounts<NumOfAccounts){//and the accounts limit has not rached to 50
+        printf("Please enter amount for deposit:");
+       if( scanf("%lf", &amount)==1&&amount>0){//the amount should be un-negative number
           openBankAccount(amount,currentNumOfBankAccounts);//create an account
-          currentNumOfBankAccounts++;//increase the accounts number
+          currentNumOfBankAccounts++;//increase the accounts number by one
       }
       else{
-          printf("the amount should be un-negative number,please try again\n");
-      }
-    }
-}
-if(input=='B'){//if the user want to see his account balance
-    printf("Account number?:\n");
-    scanf(" %d",&id);
+          printf("Faild to read the amount\n");
+          
+      }//reprint for the next transaction 
+      printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+         }
+    break;
+    case 'B':
+    printf("Please enter account number:");
+     scanf(" %d", &id);
     if(isLigalID(id)!=1){//the account id can be between 901-950
-        printf("invaild Account number, please try again\n");
+        printf("Faild to read the account number\n");
     }
     else if(isOpen(id)!=1){//if this account is close
-        printf("this account is close!\n");
+        printf("This account is closed\n");
     }
     else{
         myBalance(id);//print this account balance
     }
-}
-if(input=='D'){//if the user want to make a depoist
-printf("Account number?:\n");
-scanf(" %d",&id);
-if(isLigalID(id)!=1){//there is no such account id
-   printf("there is no such account id!\n");
-}
-else if(isOpen(id)!=1){//this account is close
-printf("this account is close!\n");
-}
-
-else{
-    printf("Amount?:\n");
+    printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+    break;
+    case 'D':
+    printf("Please enter account number:");
+    if(scanf(" %d", &id)!=-1){
+    if(isLigalID(id)!=1){//there is no such account id
+     printf("Faild to read account number:\n");}
+    else if(isOpen(id)!=1){//this account is close
+    printf("This account is closed\n");
+    }
+    else{
+    printf("Please enter amount for deposit:");
     scanf(" %lf",&amount);
    if(amount<=0){//the amount should be positive number
    printf("the amount should be positive number,please try again\n");
-}
+    }
    else{
      Deposit(amount,id);//deposit the amount into this bank account
-}
-
-}
-}
-
-if(input=='W'){//if the user want to withdrawal amount from the account
-    printf("Account number?:\n");
-    scanf(" %d",&id);
+    }
+    }}
+    else{
+         printf("Faild to read the account number\n");
+    }
+     printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+    break;
+    case 'W':
+    printf("Please enter account number:");
+    scanf(" %d", &id);
     if(isLigalID(id)!=1){//and the account id is ligal
-        printf("invaild Account number, please try again\n");
+        printf("Faild to read the account number\n");
     }
     else if(isOpen(id)!=1){//and the account is open
         printf("this account is close!\n");
     }
     else{
-        printf("Amount?:\n");
-        scanf(" %lf",&amount);
+        printf("Please enter amount to withdraw:");
+        scanf(" %lf", &amount);
         if(amount>0&&amount<getBalance(id)){//and the amount is not lower then the balance
             withDrawal(amount,id);//withdrawal the amount from the account
         }
         else{
-            printf("your balance is lower then your amount!\n");
+            printf("Cannot withdraw more than the balance\n");
         }
     }
-    }
-
-
-if(input=='C'){//if the user want to close this account
-    printf("Account number?:\n");
-    scanf("%d",&id);
+    printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+    break;
+    case 'C':
+     printf("Please enter account number:");
+      scanf("%d",&id);
     if(isLigalID(id)!=1){//and the account is ligal
-        printf("invaild Account number, please try again\n");
+        printf("Faild to read the account number\n");
     }
     else if(isOpen(id)!=1){//and open
          printf("this account is already close!\n");
     }
     else{
         closeBankAccount(id);//close this account
+        currentNumOfBankAccounts--;//decrease the accounts number
         printf("your account has been closed\n");
     }
-}
-if(input=='I'){//if the user want to insert a new rate
-    printf("Interest rate?:\n");
-    scanf("%f",&rate);
-    insertRate(rate);
-}
-if(input=='P'){//print all the accounts
-    printAllAccounts();
-}
-    }
+    printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+    break;
+    case 'I':
+      printf("please enter interest rate:\n");
+     if(scanf("%f", &rate)==1){//verify that the input is a number
+     insertRate(rate);
+     printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");}
+     else{
+         printf("Faild to read the inerest\n");
+     }
+     printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+     break;
 
-    
+     case 'P':
+     printAllAccounts();
+     printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+     break;
+
+     default:
+     printf("Faild to read the transaction\n");
+     printf("please choose a transaction type:\nO-Open Account\nB-Balance Inquiry\nD-Deposite\nW-Withdrawal\nC-Close Account\nI-Interest\nP-Print\nE-Exit\n");
+      break;
+
+
+}
+}
+}
     CloseAll();//close all the accounts(if the input=E)
-return 0;
+    return 0;
 
 }
