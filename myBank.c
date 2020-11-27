@@ -19,7 +19,7 @@ void openBankAccount(double amount,int id ){
 //this method print the current balance of the bank account with the given id
 void myBalance(int accountID){
     int id=accountID-STARTID;//match the appropriate id in the 2D array
-    printf("the current balance of your account is:%0.2lf\n",bankAccountStatus[id][AMOUNT]);
+    printf("The balance of account number %d is:%0.2lf\n",accountID,bankAccountStatus[id][AMOUNT]);
 }
 //this metohd allows to the user to make deposit into the bank account with the given id
 void Deposit(double amount,int accountID){
@@ -31,7 +31,7 @@ void Deposit(double amount,int accountID){
 void withDrawal(double amount,int accountID){
     int id=accountID-STARTID;
     bankAccountStatus[id][AMOUNT]-=amount;
-    printf("the current balance of your account is:%0.2lf\n",bankAccountStatus[id][AMOUNT]);
+    printf("The new balance is:%0.2lf\n",bankAccountStatus[id][AMOUNT]);
 }
 //this method close the bank account with the given key
 void closeBankAccount(int accountID){
@@ -51,7 +51,7 @@ void insertRate(float rate){
 void printAllAccounts(){
 for(int i=0;i<NumOfAccounts;i++){
     if(bankAccountStatus[i][STATUS]!=0){// the meaning is that account is open
-    printf("account number:%0.0f balance:%0.2lf\n",bankAccountStatus[i][accID],bankAccountStatus[i][AMOUNT]);
+    printf("the balance of account number:%0.0f is:%0.2lf\n",bankAccountStatus[i][accID],bankAccountStatus[i][AMOUNT]);
    }
  }
 }
